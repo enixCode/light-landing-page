@@ -1,0 +1,47 @@
+{
+  "name": "light-landing-page",
+  "version": "0.1.0",
+  "description": "Shared bespoke landing page for the light-* ecosystem (light-runner, light-run, light-process). One design, parameterised per project.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "files": [
+    "dist",
+    "styles.css"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepare": "tsup"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.4.0",
+    "typescript": "^5.7.0"
+  },
+  "keywords": [
+    "landing",
+    "light-runner",
+    "light-run",
+    "light-process"
+  ],
+  "license": "MIT",
+  "repository": "github:enixCode/light-landing-page"
+}
