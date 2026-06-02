@@ -116,8 +116,12 @@ export function LandingPage({ data }: { data: LandingData }) {
             {data.hero.banner && (
               <figure className="hero-figure">
                 <div className="hero-banner">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={data.hero.banner.src} alt={data.hero.banner.alt} />
+                  {data.hero.banner.node ? (
+                    data.hero.banner.node
+                  ) : data.hero.banner.src ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={data.hero.banner.src} alt={data.hero.banner.alt ?? ''} />
+                  ) : null}
                   <div className="corners" aria-hidden="true" />
                 </div>
                 <figcaption className="hero-banner-caption">

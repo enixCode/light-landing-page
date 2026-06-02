@@ -54,7 +54,15 @@ export interface LandingData {
     headline: ReactNode;
     lede: ReactNode;
     meta: LandingMetaCell[];
-    banner?: { src: string; alt: string; captionLeft: string; captionRight: string };
+    banner?: {
+      /** Image source. Ignored when `node` is set. */
+      src?: string;
+      alt?: string;
+      /** Render a custom React node (e.g. an animated SVG) in place of the image. */
+      node?: ReactNode;
+      captionLeft: string;
+      captionRight: string;
+    };
   };
   primitives: { label: string; heading: ReactNode; items: LandingPrimitive[] };
   quickstart: {
