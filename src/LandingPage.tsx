@@ -1,7 +1,70 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { LandingData } from './types';
+
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+    </svg>
+  );
+}
+
+/**
+ * Theme slider. Dependency-free on purpose: it mirrors exactly what next-themes
+ * (attribute="class", storageKey="theme") does to the DOM, so it stays in sync
+ * with the rest of the Fumadocs site without importing next-themes into this
+ * shared package (a second copy would have its own context and break useTheme).
+ */
+function ThemeToggle() {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains('dark'));
+  }, []);
+  const toggle = () => {
+    const html = document.documentElement;
+    const next = html.classList.contains('dark') ? 'light' : 'dark';
+    html.classList.remove('light', 'dark');
+    html.classList.add(next);
+    html.style.colorScheme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* private mode / storage disabled - DOM is still updated */
+    }
+    setDark(next === 'dark');
+  };
+  return (
+    <button
+      type="button"
+      className={dark ? 'theme-toggle is-dark' : 'theme-toggle'}
+      aria-label="Toggle colour theme"
+      onClick={toggle}
+    >
+      <span className="theme-toggle-track" aria-hidden="true">
+        <span className="theme-toggle-thumb">{dark ? <MoonIcon /> : <SunIcon />}</span>
+      </span>
+    </button>
+  );
+}
 
 /**
  * The shared bespoke landing for the light-* ecosystem. All structure, CSS,
@@ -83,13 +146,29 @@ export function LandingPage({ data }: { data: LandingData }) {
               <span>{data.brand}</span>
               <em data-gh-version />
             </a>
-            <nav className="top-nav" aria-label="primary">
-              {data.nav.map((l) => (
-                <a key={l.label} href={l.href} className={l.primary ? 'primary' : undefined}>
-                  {l.label}
+            <div className="top-right">
+              <nav className="top-nav" aria-label="primary">
+                {data.nav
+                  .filter((l) => !l.href.includes('github.com'))
+                  .map((l) => (
+                    <a key={l.label} href={l.href} className={l.primary ? 'primary' : undefined}>
+                      {l.label}
+                    </a>
+                  ))}
+              </nav>
+              <div className="top-actions">
+                <a
+                  className="gh-link"
+                  href={`https://github.com/${githubRepo}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="GitHub repository"
+                >
+                  <GitHubIcon />
                 </a>
-              ))}
-            </nav>
+                <ThemeToggle />
+              </div>
+            </div>
           </div>
         </div>
       </header>
