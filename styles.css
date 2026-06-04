@@ -8,7 +8,44 @@
 }
 
 /*  Bespoke landing styles. Loaded by theme/index.ts. Selectors are mostly  class-based (.hero, .prim, etc.) so they only match elements present on the  landing page; the few that could collide with VitePress chrome (section,  main/header/footer) are scoped to .bespoke-landing / .bespoke-landing-wrap. */
+  /* Light is the default palette: it applies whenever next-themes has NOT put
+     `.dark` on <html> (i.e. light OS preference or the light toggle). The dark
+     palette below kicks in under `.dark`, so the landing tracks the same
+     system + toggle as the rest of the Fumadocs site. */
   :root {
+    color-scheme: light;
+    --ink:          #f7f8fa;
+    --ink-2:        #eef0f4;
+    --ink-3:        #e6e9ee;
+    --line:         #dde1e8;
+    --line-hot:     #cbd1da;
+    --paper:        #14171c;
+    --paper-dim:    #565c67;
+    --paper-dimmer: #868c98;
+    --halo:         #0c5f78;
+    --halo-soft:    #0e7490;
+    --amber:        #9a6400;
+    --ember:        #c2410c;
+
+    /* The code window and hero banner stay dark in BOTH themes: the syntax
+       palette is tuned for a dark surface, and a dark framed figure on a light
+       page reads as intentional. These tokens never change with the theme. */
+    --banner-bg:     #050608;
+    --term-bg:       #0a0c10;
+    --term-bar:      #12151c;
+    --term-line:     #1a1d24;
+    --term-line-hot: #242933;
+    --term-fg:       #edeef0;
+    --term-muted:    #8a8f9a;
+    --term-dim:      #4d525c;
+    --term-key:      #7fddff;
+    --term-str:      #f5d796;
+    --term-num:      #c8b6ff;
+  }
+
+  :root.dark,
+  :root[data-theme='dark'] {
+    color-scheme: dark;
     --ink:          #050608;
     --ink-2:        #0a0c10;
     --ink-3:        #12151c;
@@ -197,7 +234,7 @@
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: 2px;
-    background: #000;
+    background: var(--banner-bg);
     aspect-ratio: 16 / 5;
     opacity: 0; transform: translateY(20px);
     animation: rise 1.4s .6s forwards cubic-bezier(.2,.7,.2,1);
@@ -211,7 +248,7 @@
   .hero-banner::before {
     content: "";
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 60%, var(--ink) 100%);
+    background: linear-gradient(180deg, transparent 60%, var(--banner-bg) 100%);
     pointer-events: none;
   }
   .hero-banner .corners {
@@ -223,7 +260,7 @@
     content: "";
     position: absolute;
     width: 14px; height: 14px;
-    border: 1px solid var(--halo-soft);
+    border: 1px solid var(--term-key);
     opacity: .6;
   }
   .hero-banner .corners::before { top: 0; left: 0; border-right: none; border-bottom: none; }
@@ -321,8 +358,8 @@
   /* ---------- code block ---------- */
 
   .code-window {
-    border: 1px solid var(--line);
-    background: var(--ink-2);
+    border: 1px solid var(--term-line);
+    background: var(--term-bg);
     border-radius: 2px;
     overflow: hidden;
     margin-top: 8px;
@@ -330,11 +367,11 @@
   .code-window .bar {
     display: flex; align-items: center; justify-content: space-between;
     padding: 10px 16px;
-    border-bottom: 1px solid var(--line);
-    background: var(--ink-3);
+    border-bottom: 1px solid var(--term-line);
+    background: var(--term-bar);
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: var(--paper-dimmer);
+    color: var(--term-dim);
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
@@ -353,18 +390,18 @@
     overflow-x: auto;
     font-size: 13px;
     line-height: 1.75;
-    color: var(--paper);
+    color: var(--term-fg);
   }
-  .code-window pre .k { color: var(--halo-soft); }
-  .code-window pre .s { color: #f5d796; }
-  .code-window pre .c { color: var(--paper-dimmer); font-style: italic; }
-  .code-window pre .f { color: var(--paper); }
-  .code-window pre .p { color: var(--paper-dim); }
-  .code-window pre .n { color: #c8b6ff; }
+  .code-window pre .k { color: var(--term-key); }
+  .code-window pre .s { color: var(--term-str); }
+  .code-window pre .c { color: var(--term-dim); font-style: italic; }
+  .code-window pre .f { color: var(--term-fg); }
+  .code-window pre .p { color: var(--term-muted); }
+  .code-window pre .n { color: var(--term-num); }
   button.copy {
     background: transparent;
-    border: 1px solid var(--line-hot);
-    color: var(--paper-dim);
+    border: 1px solid var(--term-line-hot);
+    color: var(--term-muted);
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.18em;
